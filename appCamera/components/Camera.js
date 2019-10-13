@@ -2,22 +2,28 @@ import React, {Component} from 'react';
 import { Camera } from 'expo-camera';
 import * as Permissions from 'expo-permissions';
 import { StyleSheet, View, Text } from 'react-native';
+import { subscribeToSocket, sendImage } from './Socket';
 import styles from './Styles';
 
 class CameraView extends Component {
     camera = null;
 
     constructor(){
-	    super();
+        super();
+        subscribeToSocket((err, message) => this.setState({ 
+            message
+          }));
 	    this.state = {
             hasCameraPermission: null,
+            connection: '',
         }
     }
 
     async componentWillMount() {
         const camera = await Permissions.askAsync(Permissions.CAMERA);
         const hasCameraPermission = camera.status === 'granted';
-        this.setState({ hasCameraPermission });
+        this.setState({ hasCameraPermission});
+        sendImage();
     }
 
     render() {
