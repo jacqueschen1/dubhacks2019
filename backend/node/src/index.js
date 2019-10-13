@@ -5,6 +5,8 @@ import socketio from 'socket.io';
 const PORT = 8080;
 const REDIS_IP = '175.0.0.3';
 
+const PROBABILITY_THREASHOLD = 0.5;
+
 var sessions = {};
 
 /**
@@ -60,6 +62,16 @@ io.on('connection', function (socket) {
 });
 
 /**
+ * Navigation service communication code (Backend <--> Navigator Service)
+ */
+const navigator_socket = io.of('/service_navigator');
+navigator_socket.on('connection', function(socket){
+  console.log('Navigation service connected.');
+
+
+});
+
+/**
  * Recognition service communication code (Backend <--> Recognition Service)
  */
 const recognition_socket = io.of('/service_recognition');
@@ -72,6 +84,17 @@ recognition_socket.on('connection', function(socket){
     console.log(JSON.stringify(data.payload, null, 2));
     console.log(data.payload.length);
     client_socket.to(data.session_id).emit('display', data.payload.length);
+
+    objects = data.payload;
+
+    //Loop through results and filter by prob threashold.
+    if (objects.length > 0) {
+      objects = objects.filter(function(el) {
+        return el["probability"] > PROBABILITY_THREASHOLD;
+      });
+      navigator_socket.emit('navigate', session_id, objects);
+    }
+
   });
 
 });
