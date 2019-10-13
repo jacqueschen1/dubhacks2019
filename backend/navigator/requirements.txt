@@ -1,0 +1,2 @@
+python-socketio[client]==4.3.1
+requests==2.22.0

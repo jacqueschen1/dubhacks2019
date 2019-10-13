@@ -52,6 +52,26 @@ services:
     depends_on:
       - node
 
+  navigator:
+    container_name: dubhacks_navigator
+    hostname: dubhacks_navigator
+    build:
+      context: ./navigator
+      dockerfile: ../docker/navigator/Dockerfile
+    image: "dubhacks_navigator"
+    command: "python3 app.py"
+    stdin_open: true
+    tty: true
+    volumes:
+      - ./navigator:/dubhacks/backend/navigator/:Z
+    ports:
+      - "5050:5050"
+    networks:
+      dubhacks_net:
+        ipv4_address: 175.0.0.5
+    depends_on:
+      - node
+
 networks:
   dubhacks_net:
     driver: bridge
