@@ -85,14 +85,14 @@ recognition_socket.on('connection', function(socket){
     console.log(data.payload.length);
     client_socket.to(data.session_id).emit('display', data.payload.length);
 
-    objects = data.payload;
+    var objects = data.payload;
 
     //Loop through results and filter by prob threashold.
     if (objects.length > 0) {
       objects = objects.filter(function(el) {
         return el["probability"] > PROBABILITY_THREASHOLD;
       });
-      navigator_socket.emit('navigate', session_id, objects);
+      navigator_socket.emit('navigate', data.session_id, objects);
     }
 
   });
@@ -132,7 +132,10 @@ client_socket.on('connection', function(socket){
     //TODO do some basic image validation here.
 
     //Send to recognition service.
-    recognition_socket.emit('process-image', session_id, image_string.img);
+
+    if (image_string.img != null) {
+      recognition_socket.emit('process-image', session_id, image_string.img);
+    }
   });
 
   socket.on('disconnect', function () {

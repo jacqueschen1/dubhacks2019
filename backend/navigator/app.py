@@ -82,7 +82,7 @@ def decide_navigation(obj_data):
             'forward': 'yes',
             'turn': 'no',
         }
-    
+
     return navigation
 
 @sio.on('navigate', namespace='/service_navigator')
@@ -101,15 +101,15 @@ def on_navigate(session_id, data):
             ]
         }
     '''
-    for obj in data['objects']:
+    for obj in data:
         obj_data = {
             'center': {
-                'x': obj['left'] + obj['width'] / 2,
-                'y': obj['top'] + obj['height'] / 2,
+                'x': obj['boundingBox']['left'] + obj['boundingBox']['width'] / 2,
+                'y': obj['boundingBox']['top'] + obj['boundingBox']['height'] / 2,
             },
             'ratio': {
-                'x': obj['width'],
-                'y': obj['height']
+                'x': obj['boundingBox']['width'],
+                'y': obj['boundingBox']['height']
             },
             'tagName': obj['tagName']
         }
@@ -117,7 +117,9 @@ def on_navigate(session_id, data):
         navigation = decide_navigation(obj_data)
         navigate_details.append(navigation)
 
-    sio.emit('navigate_details', session_id, navigate_details)
+    print(navigate_details)
+
+    sio.emit('navigate_details', {'session_id': session_id, 'payload': navigate_details}, namespace='/service_navigator')
 
 def main():
     while True:
