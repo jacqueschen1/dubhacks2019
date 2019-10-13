@@ -11,7 +11,16 @@ export default StyleSheet.create({
         right: 0,
         bottom: 200,
     },
-
+    imageButton: {
+        width: winWidth,
+        position: 'absolute',
+        bottom:0,
+        left:0,
+    },
+    container: {
+        flexDirection: 'column',
+        flex: 1
+    },
     bottomButton: {
         alignItems: 'center',
         backgroundColor: '#DDDDDD',
