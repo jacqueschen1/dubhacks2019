@@ -2,11 +2,12 @@
 
 ## Installation Instructions
 
-## Trying out the APP:
+### Trying out the APP:
 If you have an Android phone, you can download our app and run it directly on your phone by downloading the APK file from <br/>
 
+Unfortunately, you will need to set up a dev environment for Iphones because of security policies, follow the instruction in the following section. </br>
 
-## Trying out the APP in dev environment: 
+### Trying out the APP in dev environment: 
 You can tryout the app on your iphone or android phone in the dev environment by first cloning the github repository onto your laptop then running
 ```npm install```
 when you are in the app folder. (This will require you have Node.js installed, see https://nodejs.org/en/download/)<br/>
