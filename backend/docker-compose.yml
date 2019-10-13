@@ -72,6 +72,26 @@ services:
     depends_on:
       - node
 
+  imager:
+    container_name: dubhacks_imager
+    hostname: dubhacks_imager
+    build:
+      context: ./imager
+      dockerfile: ../docker/imager/Dockerfile
+    image: "dubhacks_imager"
+    command: "python3 app.py"
+    stdin_open: true
+    tty: true
+    volumes:
+      - ./imager:/dubhacks/backend/imager/:Z
+    ports:
+      - "5080:5080"
+    networks:
+      dubhacks_net:
+        ipv4_address: 175.0.0.6
+    depends_on:
+      - node
+
 networks:
   dubhacks_net:
     driver: bridge
