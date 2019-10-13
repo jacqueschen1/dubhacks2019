@@ -64,6 +64,14 @@ io.on('connection', function (socket) {
 /**
  * Navigation service communication code (Backend <--> Navigator Service)
  */
+const imager_socket = io.of('/service_imager');
+imager_socket.on('connection', function(socket){
+  console.log('Imager service connected.');
+});
+
+/**
+ * Navigation service communication code (Backend <--> Navigator Service)
+ */
 const navigator_socket = io.of('/service_navigator');
 navigator_socket.on('connection', function(socket){
   console.log('Navigation service connected.');
@@ -97,6 +105,8 @@ recognition_socket.on('connection', function(socket){
         return el["probability"] > PROBABILITY_THREASHOLD && el['tagName'] != 'exit';
       });
       navigator_socket.emit('navigate', data.session_id, objects);
+      navigator_socket.emit('process-bounding-box', {'session_id': data.session_id, 'img': sessions[data.session_id].img, 'payload': objects}); //Send to imager for debugging.
+      console.log("hey"+sessions[data.session_id].connected_at);
     }
 
   });
@@ -139,6 +149,7 @@ client_socket.on('connection', function(socket){
 
     if (image_string.img != null) {
       recognition_socket.emit('process-image', session_id, image_string.img);
+      sessions[session_id].img = image_string.img;
     }
   });
 
