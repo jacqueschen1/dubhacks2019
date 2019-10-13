@@ -79,11 +79,7 @@ navigator_socket.on('connection', function(socket){
   socket.on('return-navigator-details', function(data) {
     console.log('[Navigator '+data.session_id+'] session payload response:');
     console.log(JSON.stringify(data.payload, null, 2));
-    let text = '';
-    for (object in data.payload) {
-      str.concat(text, object["text"]);
-    }
-    sendAudio(text, client_socket);
+    client_socket.to(data.session_id).emit('display', data.payload);
   });
 
 });
@@ -156,8 +152,8 @@ client_socket.on('connection', function(socket){
     //Send to recognition service.
 
     if (image_string.img != null) {
-      recognition_socket.emit('process-image', session_id, image_string.img);
       sessions[session_id].img = image_string.img;
+      recognition_socket.emit('process-image', session_id, image_string.img);
     }
   });
 

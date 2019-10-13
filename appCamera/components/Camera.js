@@ -65,7 +65,6 @@ class CameraView extends Component {
     
 
     takeAndSend = () => {
-        console.log("ayyeeettt");
         this.takePicture();
         sendImage(this.photo);
     } 
