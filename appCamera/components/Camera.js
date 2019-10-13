@@ -114,11 +114,13 @@ class CameraView extends Component {
             <Button 
                style={styles.imageButton}
                title="Start" 
+               color="#008dff"
                onPress={() => this.start()}/> 
             
             <Button 
                style={styles.imageButton}
                title="Stop" 
+               color="#008dff"
                onPress={() => this.stop()}/> 
 
         </View>
