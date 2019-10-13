@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import { Camera } from 'expo-camera';
 import * as Permissions from 'expo-permissions';
 import { StyleSheet, View, Text } from 'react-native';
+import styles from './Styles';
 
 class CameraView extends Component {
     camera = null;
@@ -30,8 +31,9 @@ class CameraView extends Component {
 
         return (
             <View>
-                <Text>Hello</Text>
-                <Camera/>
+                <Camera 
+                style={styles.preview}
+                ref={camera => this.camera = camera}></Camera>
             </View>
         );
     }
