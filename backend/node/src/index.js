@@ -56,6 +56,7 @@ const io = socketio(server);
  */
 io.on('connection', function (socket) {
   console.log("[SocketIO] New socket connection.");
+
 });
 
 /**
@@ -64,6 +65,14 @@ io.on('connection', function (socket) {
 const recognition_socket = io.of('/service_recognition');
 recognition_socket.on('connection', function(socket){
   console.log('Recognition service connected.');
+
+  socket.on('return-process-image', function(data) {
+    console.log('session id response: ' + data.session_id);
+    console.log('session payload response:');
+    console.log(JSON.stringify(data.payload, null, 2));
+    console.log(data.payload.length);
+    client_socket.to(data.session_id).emit('display', data.payload.length);
+  });
 
 });
 
@@ -81,6 +90,7 @@ client_socket.on('connection', function(socket){
     connected_at: Math.floor(Date.now() / 1000),
   };
   console.log("[SocketIO] Assigned session ID: " + session_id);
+  socket.join(session_id); //Join client to room of session id.
 
   console.log("[SocketIO] Active sessions:");
   console.log(JSON.stringify(sessions, null, 2));
@@ -99,7 +109,7 @@ client_socket.on('connection', function(socket){
     //TODO do some basic image validation here.
 
     //Send to recognition service.
-    recognition_socket.emit('process-image', image_string);
+    recognition_socket.emit('process-image', session_id, image_string.img);
   });
 
   socket.on('disconnect', function () {

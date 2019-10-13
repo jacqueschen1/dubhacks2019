@@ -14,6 +14,7 @@ WORKDIR /dubhacks/backend/recognition
 # Install packages
 COPY requirements.txt .
 
+RUN pip3 install --upgrade pip
 RUN pip3 install -U -r requirements.txt
 
 # Expose server port

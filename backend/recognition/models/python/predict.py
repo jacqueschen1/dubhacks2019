@@ -1,4 +1,4 @@
-# The steps implemented in the object detection sample code: 
+# The steps implemented in the object detection sample code:
 # 1. for an image of width and height being (w, h) pixels, resize image to (w', h'), where w/h = w'/h' and w' x h' = 262144
 # 2. resize network input size to (w', h')
 # 3. pass the image to network and do inference
@@ -9,8 +9,18 @@ import numpy as np
 from PIL import Image
 from object_detection import ObjectDetection
 
-MODEL_FILENAME = 'model.pb'
-LABELS_FILENAME = 'labels.txt'
+import socketio
+import time
+from io import BytesIO
+import base64
+
+import os
+os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
+
+sio = socketio.Client()
+
+MODEL_FILENAME = './models/model.pb'
+LABELS_FILENAME = './models/labels.txt'
 
 
 class TFObjectDetection(ObjectDetection):
@@ -32,8 +42,10 @@ class TFObjectDetection(ObjectDetection):
             outputs = sess.run(output_tensor, {'Placeholder:0': inputs[np.newaxis, ...]})
             return outputs[0]
 
+@sio.on('process-image', namespace='/service_recognition')
+def on_message(session_id, image_base64):
+    print('Recognition service received image!')
 
-def main(image_filename):
     # Load a TensorFlow model
     graph_def = tf.GraphDef()
     with tf.gfile.FastGFile(MODEL_FILENAME, 'rb') as f:
@@ -45,13 +57,20 @@ def main(image_filename):
 
     od_model = TFObjectDetection(graph_def, labels)
 
-    image = Image.open(image_filename)
+    #image = Image.open(image_filename)
+    image = Image.open(BytesIO(base64.b64decode(image_base64)))
     predictions = od_model.predict_image(image)
-    print(predictions)
 
+    sio.emit('return-process-image', {'session_id': session_id, 'payload': predictions}, namespace='/service_recognition')
+
+def main():
+    sio.connect('http://175.0.0.2:8080', namespaces=['/service_recognition'])
+    print("Started python recognition service.")
 
 if __name__ == '__main__':
-    if len(sys.argv) <= 1:
-        print('USAGE: {} image_filename'.format(sys.argv[0]))
-    else:
-        main(sys.argv[1])
+    time.sleep(3)
+    main()
+    #if len(sys.argv) <= 1:
+    #    print('USAGE: {} image_filename'.format(sys.argv[0]))
+    #else:
+    #    main(sys.argv[1])

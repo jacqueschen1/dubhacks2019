@@ -1,4 +1,4 @@
-import socketio
+impbase64.b64decode(ort socketio
 import time
 
 sio = socketio.Client()
@@ -12,5 +12,5 @@ def main():
 
 
 if __name__ == '__main__':
-    time.sleep(5)  #Delay so we know node is awake.
-    main()
+    #time.sleep(5)  #Delay so we know node is awake.
+    #main()

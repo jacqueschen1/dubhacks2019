@@ -39,7 +39,7 @@ services:
       context: ./recognition
       dockerfile: ../docker/recognition/Dockerfile
     image: "dubhacks_recognition"
-    command: "python3 app.py"
+    command: "python3 models/python/predict.py"
     stdin_open: true
     tty: true
     volumes:
