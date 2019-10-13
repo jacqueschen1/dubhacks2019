@@ -40,7 +40,7 @@ We all had a amazing time at DubHacks 2019, thank you!
 # Installation
 
 ### Trying out the app
-If you run Android, you can download our app directly on your phone using the APK file.
+If you run Android, you can download our app directly on your phone using the APK file [here](https://expo.io/@jacdeng/appCamera/builds).
 
 ### Build from source (Front-end)
 
