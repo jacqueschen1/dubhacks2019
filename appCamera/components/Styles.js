@@ -19,6 +19,7 @@ export default StyleSheet.create({
     },
     container: {
         flexDirection: 'column',
-        flex: 1
+        flex: 1,
+        backgroundColor: "#8C00FF"
     },
 });
