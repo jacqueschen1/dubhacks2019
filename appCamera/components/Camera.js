@@ -49,7 +49,7 @@ class CameraView extends Component {
     }
 
     start = () => {
-        var ival = setInterval(() => {this.takeAndSend();}, 2200);
+        var ival = setInterval(() => {this.takeAndSend();}, 4000);
 
         this.setState({
             interval: ival,
