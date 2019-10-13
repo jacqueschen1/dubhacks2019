@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import { Camera } from 'expo-camera';
 import * as Permissions from 'expo-permissions';
+import { Audio } from 'expo-av';
 import { 
     StyleSheet, 
     View, 
