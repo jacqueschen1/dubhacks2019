@@ -50,8 +50,29 @@ server.listen(PORT, () => {
  * SOCKET IO
  **/
 const io = socketio(server);
+
+/**
+ * Top level socket communication code.
+ */
 io.on('connection', function (socket) {
-  console.log("[SocketIO] Client connected.");
+  console.log("[SocketIO] New socket connection.");
+});
+
+/**
+ * Recognition service communication code (Backend <--> Recognition Service)
+ */
+const recognition_socket = io.of('/service_recognition');
+recognition_socket.on('connection', function(socket){
+  console.log('Recognition service connected.');
+
+});
+
+/**
+ * Client communication code (Backend <--> Recognition Service)
+ */
+const client_socket = io.of('/client');
+client_socket.on('connection', function(socket){
+  console.log('Client connected.');
 
   //Generate new session and session ID.
   var session_id = hash(6);
@@ -64,6 +85,8 @@ io.on('connection', function (socket) {
   console.log("[SocketIO] Active sessions:");
   console.log(JSON.stringify(sessions, null, 2));
 
+  socket.emit('session_id', session_id); //Return session id back.
+
   io.emit('this', { will: 'be received by everyone'});
 
   /**
@@ -71,7 +94,12 @@ io.on('connection', function (socket) {
    * @param image_string {String}      Base64 of image file.
    */
   socket.on('new-image', function (image_string) {
-    console.log("[SocketIO "+session_id+"] New image data: " + image_string.img);
+    console.log("[SocketIO "+session_id+"] New image data!");
+
+    //TODO do some basic image validation here.
+
+    //Send to recognition service.
+    recognition_socket.emit('proccess-image', image_string);
   });
 
   socket.on('disconnect', function () {
