@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import { Camera } from 'expo-camera';
 import * as Permissions from 'expo-permissions';
-import { StyleSheet, View, Text } from 'react-native';
+import { StyleSheet, View, Text, Button } from 'react-native';
 import { subscribeToSocket, sendImage } from './Socket';
 import styles from './Styles';
 
@@ -23,7 +23,6 @@ class CameraView extends Component {
         const camera = await Permissions.askAsync(Permissions.CAMERA);
         const hasCameraPermission = camera.status === 'granted';
         this.setState({ hasCameraPermission});
-        sendImage();
     }
 
     render() {
@@ -40,7 +39,11 @@ class CameraView extends Component {
                 <Camera 
                 style={styles.preview}
                 ref={camera => this.camera = camera}></Camera>
-            </View>
+                <Button 
+                    style={styles.imageButton}
+                    title="imageSend" 
+                    onPress={sendImage()}/> 
+            </View> 
         );
     }
 }
