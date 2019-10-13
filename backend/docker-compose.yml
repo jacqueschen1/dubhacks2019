@@ -43,12 +43,14 @@ services:
     stdin_open: true
     tty: true
     volumes:
-      - ./recognition:/dubhacks/backend/recognition/
+      - ./recognition:/dubhacks/backend/recognition/:Z
     ports:
       - "5000:5000"
     networks:
       dubhacks_net:
         ipv4_address: 175.0.0.4
+    depends_on:
+      - node
 
 networks:
   dubhacks_net:
