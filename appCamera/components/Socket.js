@@ -5,6 +5,9 @@ const socket = socketIO('http://10.19.146.32:8080/client', {
     jsonp: false
 });
 socket.connect();
+socket.on('display', function(audiotext) {
+    console.log(audiotext);
+});
 
 function subscribeToSocket(cb) {
     socket.on('this', message => cb(null, "connected"));
@@ -12,7 +15,11 @@ function subscribeToSocket(cb) {
 }
 
 function sendImage(input) {
-    socket.emit('new-image', {img: input});
+    socket.emit('new-image', {img: input}, callback());
+}
+
+function callback(){
+    console.log("sent");
 }
   
 export { subscribeToSocket, sendImage };

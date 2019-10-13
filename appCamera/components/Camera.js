@@ -20,6 +20,9 @@ class CameraView extends Component {
             message
           }));
 	    this.state = {
+
+            interval : null,
+
             hasCameraPermission: null,
             connection: '',
             flash: 'off',
@@ -44,15 +47,31 @@ class CameraView extends Component {
         this.setState({ hasCameraPermission});
     }
 
+    start = () => {
+        var ival = setInterval(() => {this.takeAndSend();}, 2200);
+
+        this.setState({
+            interval: ival,
+        });
+    }
+
+    stop = () => {
+        clearInterval(this.state.interval);
+        this.setState({
+            interval : null,
+        });
+    }
+    
+
     takeAndSend = () => {
-        console.log("you pressed the putton!");
+        console.log("ayyeeettt");
         this.takePicture();
         sendImage(this.photo);
     } 
 
     takePicture = () => {
         if (this.camera) {
-            this.camera.takePictureAsync({base64: true, onPictureSaved: this.onPictureSaved });
+            this.camera.takePictureAsync({quality: 0.82 ,base64: true, onPictureSaved: this.onPictureSaved });
         }
     };
 
@@ -93,8 +112,13 @@ class CameraView extends Component {
             
             <Button 
                style={styles.imageButton}
-               title="take picture and send" 
-               onPress={() => this.takeAndSend()}/> 
+               title="Start" 
+               onPress={() => this.start()}/> 
+            
+            <Button 
+               style={styles.imageButton}
+               title="Stop" 
+               onPress={() => this.stop()}/> 
 
         </View>
         );
