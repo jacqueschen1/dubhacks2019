@@ -36,11 +36,10 @@ Additionally, we see a lot of creative use cases to incorporate additional APIs 
 We all had a amazing time at DubHacks 2019, thank you!
 
 
-
 # Installation
 
 ### Trying out the app
-If you run Android, you can download our app directly on your phone using the APK file [here](https://expo.io/@jacdeng/appCamera/builds).
+If you run Android, you can download our app directly on your phone using the APK file [here](https://exp-shell-app-assets.s3.us-west-1.amazonaws.com/android/%40jacdeng/appCamera-9383b7742d794efaa2696f80bdadc437-signed.apk).
 
 ### Build from source (Front-end)
 
