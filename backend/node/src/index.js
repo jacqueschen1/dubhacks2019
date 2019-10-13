@@ -99,7 +99,7 @@ client_socket.on('connection', function(socket){
     //TODO do some basic image validation here.
 
     //Send to recognition service.
-    recognition_socket.emit('proccess-image', image_string);
+    recognition_socket.emit('process-image', image_string);
   });
 
   socket.on('disconnect', function () {

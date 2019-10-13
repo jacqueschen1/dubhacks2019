@@ -3,9 +3,9 @@ import time
 
 sio = socketio.Client()
 
-@sio.on('proccess-image')
+@sio.on('process-image')
 def on_message(data):
-    print('Recognition service recieved image!')
+    print('Recognition service received image!')
 
 def main():
     sio.connect('http://175.0.0.2:8080', namespaces=['/service_recognition'])
