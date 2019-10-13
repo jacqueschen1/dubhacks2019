@@ -21,10 +21,4 @@ export default StyleSheet.create({
         flexDirection: 'column',
         flex: 1
     },
-    bottomButton: {
-        alignItems: 'center',
-        backgroundColor: '#DDDDDD',
-        height: 100,
-        width: winWidth,
-      },
 });

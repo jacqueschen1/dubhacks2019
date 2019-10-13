@@ -1,17 +1,13 @@
 import React, {Component} from 'react';
-import { Camera, FileSystem } from 'expo-camera';
+import { Camera } from 'expo-camera';
 import * as Permissions from 'expo-permissions';
 import { 
     StyleSheet, 
     View, 
     Text,
     Platform,
-    TouchableOpacity,
     Button
 } from 'react-native';
-import { 
-    Octicons
-  } from '@expo/vector-icons';
 import { subscribeToSocket, sendImage } from './Socket';
 import styles from './Styles';
 
@@ -37,7 +33,9 @@ class CameraView extends Component {
             pictureSize: undefined,
             pictureSizes: [],
             pictureSizeId: 0,
-        }
+            message: '',
+        };
+        this.photo = null;
     }
 
     async componentWillMount() {
@@ -46,17 +44,20 @@ class CameraView extends Component {
         this.setState({ hasCameraPermission});
     }
 
+    takeAndSend = () => {
+        console.log("you pressed the putton!");
+        this.takePicture();
+        sendImage(this.photo);
+    } 
+
     takePicture = () => {
         if (this.camera) {
-          this.camera.takePictureAsync({ onPictureSaved: this.onPictureSaved });
+            this.camera.takePictureAsync({base64: true, onPictureSaved: this.onPictureSaved });
         }
     };
 
-    onPictureSaved = async photo => {
-        await FileSystem.moveAsync({
-          from: photo.uri,
-          to: `${FileSystem.documentDirectory}photos/${Date.now()}.jpg`,
-        });
+    onPictureSaved = async photoo => {
+        this.photo = photoo.base64
         this.setState({ newPhotos: true });
     }
 
@@ -89,14 +90,12 @@ class CameraView extends Component {
             {/* {this.renderTopBar()}
             {this.renderBottomBar()} */}
             </Camera>
-
-            <TouchableOpacity style={styles.bottomButton} onPress={this.takePicture}>
-                <Text> Take picture </Text>
-            </TouchableOpacity>
+            
             <Button 
                style={styles.imageButton}
-               title="imageSend" 
-               onPress={sendImage()}/> 
+               title="take picture and send" 
+               onPress={() => this.takeAndSend()}/> 
+
         </View>
         );
     }
