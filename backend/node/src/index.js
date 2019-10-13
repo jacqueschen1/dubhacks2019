@@ -37,7 +37,7 @@ client.on("error", (err) => {
  **/
 const requestHandler = (request, response) => {
   console.log("New request: " + request.url)
-  response.end('Hello Node.js Server!');
+  response.end('Hello World!');
 }
 const server = http.createServer(requestHandler);
 
@@ -71,12 +71,14 @@ io.on('connection', function (socket) {
    * @param image_string {String}      Base64 of image file.
    */
   socket.on('new-image', function (image_string) {
-    console.log("[SocketIO "+session_id+"] New image data: " + image_string);
+    console.log("[SocketIO "+session_id+"] New image data: " + image_string.img);
   });
 
   socket.on('disconnect', function () {
     io.emit('user disconnected');
     delete sessions[session_id];
     console.log("[SocketIO] Client disconnected.");
+    console.log("[SocketIO] Active sessions:");
+    console.log(JSON.stringify(sessions, null, 2));
   });
 });
