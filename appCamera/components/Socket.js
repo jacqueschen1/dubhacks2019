@@ -12,32 +12,39 @@ socket.on('display', function(audiotext) {
 
 async function playSound(audiotext) {
     const soundObject = new Audio.Sound();
+    console.log(audiotext);
+    console.log(audiotext[0]);
     try {
         // React doesn't like dynamically made paths
-        switch(audiotext) {
+        switch(audiotext[0]) {
             case 'wr':
                 await soundObject.loadAsync(require('../assets/wr.mp3'));
+                await soundObject.playAsync();
                 break;
             case 'wl':
                 await soundObject.loadAsync(require('../assets/wl.mp3'));
+                await soundObject.playAsync();
                 break;
             case 'wa':
                 await soundObject.loadAsync(require('../assets/wa.mp3'));
+                await soundObject.playAsync();
                 break;
             case 'ea':
                 await soundObject.loadAsync(require('../assets/ea.mp3'));
+                await soundObject.playAsync();
                 break;
             case 'er':
                 await soundObject.loadAsync(require('../assets/er.mp3'));
+                await soundObject.playAsync();
                 break;
             case 'el':
                 await soundObject.loadAsync(require('../assets/el.mp3'));
+                await soundObject.playAsync();
                 break;
             default:
-                await soundObject.loadAsync(require('../assets/nf.mp3'));
+                //await soundObject.loadAsync(require('../assets/nf.mp3'));
                 break;
         }
-        await soundObject.playAsync();
     } catch (error) {
         console.log(error);
     }

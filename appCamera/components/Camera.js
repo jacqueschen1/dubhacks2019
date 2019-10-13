@@ -49,7 +49,7 @@ class CameraView extends Component {
     }
 
     start = () => {
-        var ival = setInterval(() => {this.takeAndSend();}, 2200);
+        var ival = setInterval(() => {this.takeAndSend();}, 4000);
 
         this.setState({
             interval: ival,
@@ -113,11 +113,13 @@ class CameraView extends Component {
             <Button 
                style={styles.imageButton}
                title="Start" 
+               color="#008dff"
                onPress={() => this.start()}/> 
             
             <Button 
                style={styles.imageButton}
                title="Stop" 
+               color="#008dff"
                onPress={() => this.stop()}/> 
 
         </View>
