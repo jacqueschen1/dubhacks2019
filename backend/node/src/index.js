@@ -79,7 +79,11 @@ navigator_socket.on('connection', function(socket){
   socket.on('return-navigator-details', function(data) {
     console.log('[Navigator '+data.session_id+'] session payload response:');
     console.log(JSON.stringify(data.payload, null, 2));
-    client_socket.to(data.session_id).emit('display', data.payload);
+    let text = '';
+    for (object in data.payload) {
+      str.concat(text, object["text"]);
+    }
+    sendAudio(text, client_socket);
   });
 
 });
