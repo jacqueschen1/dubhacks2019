@@ -23,7 +23,7 @@ services:
     stdin_open: true
     tty: true
     volumes:
-      - ./node:/dubhacks/backend/node/
+      #- ./node:/dubhacks/backend/node/
       - /dubhacks/backend/node/node_modules
     ports:
       - "8080:8080"
