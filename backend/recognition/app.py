@@ -1,12 +1,16 @@
-from flask import Flask
-from flask_socketio import SocketIO
+import socketio
+import time
 
-app = Flask(__name__)
-socketio = SocketIO(app)
+def main():
+    # standard Python
+    sio = socketio.Client()
 
-@socketio.on('message')
-def handle_message(message):
-    print('received message: ' + message)
+    sio.connect('http://175.0.0.2:8080')
+    print('my sid is', sio.sid)
+
+    sio.emit('new-image', {'img': 'theimagestringgoeshere'})
 
 if __name__ == '__main__':
-    socketio.run(app)
+    print("Helo world.")
+    time.sleep(5)
+    main()
