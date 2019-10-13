@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import { Camera } from 'expo-camera';
+import { Camera, FileSystem } from 'expo-camera';
 import * as Permissions from 'expo-permissions';
 import { 
     StyleSheet, 
