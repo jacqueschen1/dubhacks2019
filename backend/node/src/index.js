@@ -95,17 +95,21 @@ recognition_socket.on('connection', function(socket){
     console.log('[Recognition '+data.session_id+'] session payload response:');
     console.log(JSON.stringify(data.payload, null, 2));
     console.log(data.payload.length);
-    client_socket.to(data.session_id).emit('display', data.payload.length);
 
     let objects = data.payload;
 
     //Loop through results and filter by prob threashold.
     if (objects.length > 0) {
-      objects = objects.filter(function(el) {
+      const filtered_objects = objects.filter((el) => {
         return el["probability"] > PROBABILITY_THREASHOLD;//&& el['tagName'] != 'exit';
       });
-      navigator_socket.emit('navigate', data.session_id, objects);
-      imager_socket.emit('process-bounding-box', data.session_id, { 'img': sessions[data.session_id].img, 'payload': objects}); //Send to imager for debugging.
+
+      if (filtered_objects.length == 0) {
+        return;
+      }
+
+      navigator_socket.emit('navigate', data.session_id, filtered_objects);
+      imager_socket.emit('process-bounding-box', data.session_id, { 'img': sessions[data.session_id].img, 'payload': filtered_objects}); //Send to imager for debugging.
       console.log("hey"+sessions[data.session_id].connected_at);
     }
 

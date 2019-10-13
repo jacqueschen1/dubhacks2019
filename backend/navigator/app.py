@@ -7,81 +7,20 @@ sio = socketio.Client()
 def decide_navigation(obj_data):
     navigation = None
 
-    if obj_data['tagName'] == 'exit':
-        # Overhead
-        if obj_data['center']['y'] < 0.2 and obj_data['ratio']['x'] > 0.3:
-            navigation = {
-                'text': 'Passing exit, keep going',
-                'forward': 'forward',
-                'turn': 'no',
-            }
-        # Centered, keep walking
-        elif abs(obj_data['center']['x'] - 0.5) < 0.3:
-            navigation = {
-                'text': 'Keep walking forward',
-                'forward': 'forward',
-                'turn': 'no',
-            }
-    elif obj_data['tagName'] == 'washroom':
-        # Close
-        if obj_data['ratio']['x'] > 0.5:
-            navigation = {
-                'text': 'Entering washroom, keep going',
-                'forward': 'yes',
-                'turn': 'no',
-            }
-        # Centered, keep walking
-        elif abs(obj_data['center']['x'] - 0.5) < 0.3:
-            navigation = {
-                'text': 'Keep walking forward',
-                'forward': 'yes',
-                'turn': 'no',
-            }
-    elif obj_data['tagName'] == 'washroom sign':
-        # Overhead
-        if obj_data['center']['y'] < 0.2 and obj_data['ratio']['x'] > 0.3:
-            navigation = {
-                'text': 'Entering washroom, keep going',
-                'forward': 'forward',
-                'turn': 'no',
-            }
-        # Centered, keep walking
-        elif abs(obj_data['center']['x'] - 0.5) < 0.3:
-            navigation = {
-                'text': 'Keep walking forward',
-                'forward': 'forward',
-                'turn': 'no',
-            }
-
-    # Left or right
-    # close, should turn left
-    if obj_data['ratio']['x'] > 0.3 and obj_data['center']['x'] < 0.5:
-        navigation = {
-            'text': 'Turn left',
-            'forward': 'no',
-            'turn': 'left',
-        }
-    # close, should turn right
-    elif obj_data['ratio']['x'] > 0.3 and obj_data['center']['x'] > 0.5:
-        navigation = {
-            'text': 'Turn right',
-            'forward': 'no',
-            'turn': 'right',
-        }
-    # not close, should inform user left
-    elif obj_data['center']['x'] < 0.5:
-        navigation = {
-            'text': 'Keep walking, coming up on your left',
-            'forward': 'yes',
-            'turn': 'no',
-        }
-    # not close, should inform user right
+    if obj_data['tagName'] != 'exit':
+        if obj_data['center']['x'] < 0.3:
+            navigation = 'wl'
+        elif obj_data['center']['x'] > 0.7:
+            navigation = 'wr'
+        else:
+            navigation = 'wa'
     else:
-         navigation = {
-            'text': 'Keep walking, coming up on your right',
-            'forward': 'yes',
-            'turn': 'no',
-        }
+        if obj_data['center']['x'] < 0.3:
+            navigation = 'el'
+        elif obj_data['center']['x'] > 0.7:
+            navigation = 'er'
+        else:
+            navigation = 'ea'
 
     return navigation
 
@@ -116,8 +55,6 @@ def on_navigate(session_id, data):
 
         navigation = decide_navigation(obj_data)
         navigate_details.append(navigation)
-
-    print(navigate_details)
 
     sio.emit('return-navigator-details', {'session_id': session_id, 'payload': navigate_details}, namespace='/service_navigator')
 
