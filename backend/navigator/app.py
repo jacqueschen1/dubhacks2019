@@ -119,12 +119,13 @@ def on_navigate(session_id, data):
 
     print(navigate_details)
 
-    sio.emit('navigate_details', {'session_id': session_id, 'payload': navigate_details}, namespace='/service_navigator')
+    sio.emit('return-navigator-details', {'session_id': session_id, 'payload': navigate_details}, namespace='/service_navigator')
 
 def main():
     while True:
         try:
             sio.connect('http://175.0.0.2:8080', namespaces=['/service_navigator'])
+            print("Started python navigator service.")
             break
         except ConnectionError:
             pass

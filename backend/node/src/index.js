@@ -68,6 +68,11 @@ const navigator_socket = io.of('/service_navigator');
 navigator_socket.on('connection', function(socket){
   console.log('Navigation service connected.');
 
+  socket.on('return-navigator-details', function(data) {
+    console.log('[Navigator '+data.session_id+'] session payload response:');
+    console.log(JSON.stringify(data.payload, null, 2));
+    client_socket.to(data.session_id).emit('display', data.payload);
+  });
 
 });
 
@@ -79,8 +84,7 @@ recognition_socket.on('connection', function(socket){
   console.log('Recognition service connected.');
 
   socket.on('return-process-image', function(data) {
-    console.log('session id response: ' + data.session_id);
-    console.log('session payload response:');
+    console.log('[Recognition '+data.session_id+'] session payload response:');
     console.log(JSON.stringify(data.payload, null, 2));
     console.log(data.payload.length);
     client_socket.to(data.session_id).emit('display', data.payload.length);
@@ -90,7 +94,7 @@ recognition_socket.on('connection', function(socket){
     //Loop through results and filter by prob threashold.
     if (objects.length > 0) {
       objects = objects.filter(function(el) {
-        return el["probability"] > PROBABILITY_THREASHOLD;
+        return el["probability"] > PROBABILITY_THREASHOLD && el['tagName'] != 'exit';
       });
       navigator_socket.emit('navigate', data.session_id, objects);
     }
