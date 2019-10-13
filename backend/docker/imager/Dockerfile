@@ -10,6 +10,7 @@ RUN apt-get -qq -y install \
 
 # Create work dir
 RUN mkdir -p /dubhacks/backend/imager
+RUN mkdir -p /dubhacks/backend/imager/images
 WORKDIR /dubhacks/backend/imager
 
 # Install packages

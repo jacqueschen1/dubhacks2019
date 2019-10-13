@@ -97,15 +97,15 @@ recognition_socket.on('connection', function(socket){
     console.log(data.payload.length);
     client_socket.to(data.session_id).emit('display', data.payload.length);
 
-    var objects = data.payload;
+    let objects = data.payload;
 
     //Loop through results and filter by prob threashold.
     if (objects.length > 0) {
       objects = objects.filter(function(el) {
-        return el["probability"] > PROBABILITY_THREASHOLD && el['tagName'] != 'exit';
+        return el["probability"] > PROBABILITY_THREASHOLD;//&& el['tagName'] != 'exit';
       });
       navigator_socket.emit('navigate', data.session_id, objects);
-      navigator_socket.emit('process-bounding-box', {'session_id': data.session_id, 'img': sessions[data.session_id].img, 'payload': objects}); //Send to imager for debugging.
+      imager_socket.emit('process-bounding-box', data.session_id, { 'img': sessions[data.session_id].img, 'payload': objects}); //Send to imager for debugging.
       console.log("hey"+sessions[data.session_id].connected_at);
     }
 

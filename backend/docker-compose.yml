@@ -84,6 +84,7 @@ services:
     tty: true
     volumes:
       - ./imager:/dubhacks/backend/imager/:Z
+      - ./mediafiles/images:/dubhacks/backend/imager/images:Z
     ports:
       - "5080:5080"
     networks:
