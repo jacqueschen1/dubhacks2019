@@ -6,21 +6,26 @@ import {
     View, 
     Text,
     Platform,
-    TouchableOpacity
+    TouchableOpacity,
+    Button
 } from 'react-native';
 import { 
     Octicons
   } from '@expo/vector-icons';
-
+import { subscribeToSocket, sendImage } from './Socket';
 import styles from './Styles';
 
 class CameraView extends Component {
     camera = null;
 
     constructor(){
-	    super();
+        super();
+        subscribeToSocket((err, message) => this.setState({ 
+            message
+          }));
 	    this.state = {
             hasCameraPermission: null,
+            connection: '',
             flash: 'off',
             zoom: 0,
             autoFocus: 'on',
@@ -38,7 +43,7 @@ class CameraView extends Component {
     async componentWillMount() {
         const camera = await Permissions.askAsync(Permissions.CAMERA);
         const hasCameraPermission = camera.status === 'granted';
-        this.setState({ hasCameraPermission });
+        this.setState({ hasCameraPermission});
     }
 
     takePicture = () => {
@@ -88,7 +93,10 @@ class CameraView extends Component {
             <TouchableOpacity style={styles.bottomButton} onPress={this.takePicture}>
                 <Text> Take picture </Text>
             </TouchableOpacity>
-
+            <Button 
+               style={styles.imageButton}
+               title="imageSend" 
+               onPress={sendImage()}/> 
         </View>
         );
     }
