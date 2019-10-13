@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, View, Button } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
 import CameraView from './components/Camera';
 import styles from './components/Styles';
 import { YellowBox } from 'react-native';
