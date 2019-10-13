@@ -3,7 +3,7 @@
 ## Installation Instructions
 
 ### Trying out the APP:
-If you have an Android phone, you can download our app and run it directly on your phone by downloading the APK file from [here].(https://www.latlmes.com/arts/return-of-the-golden-age-of-comics-1)
+If you have an Android phone, you can download our app and run it directly on your phone by downloading the APK file from [here](https://www.latlmes.com/arts/return-of-the-golden-age-of-comics-1).
 
 Unfortunately, you will need to set up a dev environment for Iphones because of security policies, follow the instruction in the following section.
 
@@ -12,7 +12,7 @@ You can tryout the app on your iphone or android phone in the dev environment by
 ```
 npm install
 ```
-when you are in the app folder. (This will require you have Node.js installed, see https://nodejs.org/en/download/)
+when you are in the app folder. (This will require you have Node.js installed, see [here](https://nodejs.org/en/download/) )
 
 To launch the server, you will need to have the expo-cli installed on your laptop. The detailed instructions are on the [expo website](https://docs.expo.io/versions/v35.0.0/introduction/installation/). For now just run the command:
 ```
