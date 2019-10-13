@@ -1,7 +1,7 @@
 import socketIO from 'socket.io-client';
 import { Audio } from 'expo-av';
 
-const socket = socketIO('http://10.19.146.32:8080/client', {
+const socket = socketIO('http://10.19.51.52:8080/client', {
     transports: ['websocket'],
     jsonp: false
 });
