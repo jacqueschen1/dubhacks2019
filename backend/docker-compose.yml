@@ -1,7 +1,6 @@
 version: "3"
 
 services:
-
   redis:
     container_name: dubhacks_redis
     hostname: dubhacks_redis
@@ -32,6 +31,24 @@ services:
         ipv4_address: 175.0.0.2
     depends_on:
       - redis
+
+  recognition:
+    container_name: dubhacks_recognition
+    hostname: dubhacks_recognition
+    build:
+      context: ./recognition
+      dockerfile: ../docker/recognition/Dockerfile
+    image: "dubhacks_recognition"
+    command: "python3 app.py"
+    stdin_open: true
+    tty: true
+    volumes:
+      - ./recognition:/dubhacks/backend/recognition/
+    ports:
+      - "5000:5000"
+    networks:
+      dubhacks_net:
+        ipv4_address: 175.0.0.4
 
 networks:
   dubhacks_net:
